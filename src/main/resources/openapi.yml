@@ -1,0 +1,96 @@
+swagger: "2.0"
+info:
+  title: Sample API
+  description: API description in Markdown.
+  version: 1.0.0
+host: api.example.com
+basePath: /v1
+schemes:
+  - https
+paths:
+  /users:
+    get:
+      operationId: getUsers
+      summary: Returns a list of users.
+      description: Optional extended description in Markdown.
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/User'
+    post:
+      operationId: postUsers
+      summary: Creates a User
+      description: Optional extended description in Markdown.
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: user
+          description: The user to create
+          schema:
+            $ref: '#/definitions/CreateUser'
+      responses:
+        201:
+          description: CREATED
+        400:
+          description: BAD REQUEST
+        404:
+          description: NOT FOUND
+  /users/{userId}:
+    get:
+      operationId: getUsersById
+      summary: Returns a user.
+      description: Optional extended description in Markdown.
+      produces:
+        - application/json
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/User'
+definitions:
+  User:
+    type: object
+    description: "a user"
+    properties:
+      id:
+        type: string
+        description: "user unique identifier"
+        example: "U001"
+      name:
+        type: string
+        description: "user full name"
+        example: "John Doe"
+      contact:
+        type: string
+        description: "user's main contact"
+        example: "john@email.address"
+  CreateUser:
+    type: object
+    description: "a user to create"
+    required:
+      - name
+      - contact
+    properties:
+      name:
+        type: string
+        description: "user full name"
+        example: "John Doe"
+        minLength: 5
+        maxLength: 10
+      contact:
+        type: string
+        description: "user's main contact"
+        example: "john@email.address"
+        minLength: 5
+        maxLength: 10
